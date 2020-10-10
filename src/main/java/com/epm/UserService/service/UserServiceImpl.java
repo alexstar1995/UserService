@@ -27,15 +27,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Mono<User> getUserById(Long userId, Long detailsId) {
-
-        Mono<User> user = userRepository.findById(userId);
-        Mono<UserDetails> userDetails = userDetailsRepository.findById(detailsId);
-
-        return Mono.zip(user, userDetails, (usr, details) -> {
-           usr.setUserDetails(details);
-           return usr;
-        });
+    public Mono<User> getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .flatMap(usr -> userDetailsRepository
+                            .findById(usr.getUserDetails().getDetailId())
+                            .doOnSuccess(usr::setUserDetails)
+                            .then(Mono.just(usr))
+        );
     }
 
     @Override
@@ -45,11 +43,6 @@ public class UserServiceImpl implements IUserService {
                         .findById(usr.getUserDetails().getDetailId())
                         .doOnSuccess(usr::setUserDetails)
                         .thenMany(Flux.just(usr)));
-    }
-
-    @Override
-    public Mono<UserDetails> getUserDetails(Long userId) {
-        return userDetailsRepository.findById(userId);
     }
 
     @Override
@@ -71,24 +64,39 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public Mono<User> updateUser(User user) {
 
-        UserDetails userDetails = user.getUserDetails();
-
-        Mono<UserDetails> newUserDetails = userDetailsRepository.findById(userDetails.getDetailId())
-                .flatMap(oldDetails -> {
-                    setUserDetails(oldDetails, userDetails);
-                    return userDetailsRepository.save(oldDetails);
-                });
-
-        Mono<User> newUser = userRepository.findById(user.getUserId())
-                .flatMap(oldUser -> {
-                    setUser(oldUser, user);
-                    return userRepository.save(oldUser);
-                });
+        Mono<UserDetails> newUserDetails = getNewUserDetails(user.getUserDetails());
+        Mono<User> newUser = getNewUser(user);
 
         return Mono.zip(newUser, newUserDetails, (usr, details) -> {
             usr.setUserDetails(details);
             return usr;
         });
+    }
+
+    @Override
+    @Transactional
+    public Mono<Void> deleteUser(Long userId) {
+        return userRepository.findById(userId)
+                .flatMap(user -> userDetailsRepository
+                             .deleteById(user.getUserDetails().getDetailId())
+                             .doOnSuccess(details -> userRepository.deleteById(userId))
+                );
+    }
+
+    private Mono<User> getNewUser(User user) {
+        return userRepository.findById(user.getUserId())
+                .flatMap(oldUser -> {
+                    setUser(oldUser, user);
+                    return userRepository.save(oldUser);
+                });
+    }
+
+    private Mono<UserDetails> getNewUserDetails(UserDetails userDetails) {
+        return userDetailsRepository.findById(userDetails.getDetailId())
+                .flatMap(oldDetails -> {
+                    setUserDetails(oldDetails, userDetails);
+                    return userDetailsRepository.save(oldDetails);
+                });
     }
 
     private void setUser(User oldUser, User newUser) {
@@ -103,13 +111,5 @@ public class UserServiceImpl implements IUserService {
         oldDetails.setFirstName(newDetails.getFirstName());
         oldDetails.setLastName(newDetails.getLastName());
         oldDetails.setGender(newDetails.getGender());
-    }
-
-    @Override
-    @Transactional
-    public Mono<Void> deleteUser(Long userId, Long detailsId) {
-        return userDetailsRepository
-                .deleteById(detailsId)
-                .doOnSuccess(x -> userRepository.deleteById(userId));
     }
 }
