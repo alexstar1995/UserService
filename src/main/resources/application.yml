@@ -1,2 +1,10 @@
 server:
   port: 8080
+
+spring:
+  application.name: UserService
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog-master.xml
+    drop-first: false

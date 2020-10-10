@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.epm</groupId>
 	<artifactId>UserService</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>UserService</name>
 	<description>User Management Service</description>
 
@@ -49,6 +49,10 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -67,6 +71,16 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-spring-webflux</artifactId>
 			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>3.8.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
