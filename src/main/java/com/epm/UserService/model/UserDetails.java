@@ -17,7 +17,6 @@ public class UserDetails {
 
     @Id
     @Column("detail_id")
-    @Transient
     private Long detailId;
 
     @Column("first_name")
