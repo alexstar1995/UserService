@@ -29,4 +29,7 @@ public class UserDetails {
 
     @Column("gender")
     private String gender;
+
+    @Column("user_id")
+    private Long userId;
 }

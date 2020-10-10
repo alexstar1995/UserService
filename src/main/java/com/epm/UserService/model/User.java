@@ -8,8 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import reactor.core.publisher.Mono;
-
 import java.sql.Date;
 
 @Table("users")
@@ -37,5 +35,5 @@ public class User {
     @Column("updated_date")
     private Date updatedDate;
 
-    private Mono<UserDetails> userDetails;
+    private UserDetails userDetails;
 }
