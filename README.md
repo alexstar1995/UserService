@@ -20,8 +20,8 @@ d) Open your browser and go to ``http://localhost:8088/swagger-ui/index.html``
 
 ## 4. Use the application
 
-a) The Swagger-UI exposes the CRUD operations that UserService supports under 'user-controller'section \
-b) You can also see the model under the 'models'
+a) The Swagger-UI exposes the CRUD operations that UserService supports under *user-controller* section \
+b) You can also see the model under the *models* section
 
 ## 5. More about the app
 a) It uses Spring-Webflux application and a Postgres Database, that run in 2 separate docker containers. \
