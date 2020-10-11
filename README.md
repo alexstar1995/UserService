@@ -9,13 +9,16 @@ d) Make sure you have Git installed
 
 ## 2. Download the project
 
-In a directory on your local filesystem run the command: git clone git@github.com:alexstar1995/UserService.git
+In a directory on your local filesystem run the command: 
+``git clone git@github.com:alexstar1995/UserService.git``
   
 ## 3. Run the project
 a) In the local directory where you cloned the Git repo from step 2, go to UserService directory
-b) Run the command: mvn clean install -U && docker-compose up
+b) Run the command: 
+``mvn clean install -U && docker-compose up``
 c) Wait for 2-3 minutes, the last line in the log should contain "Started UserServiceApplication in ..."
-d) Open your browser and go to http://localhost:8088/swagger-ui/index.html
+d) Open your browser and go to
+``http://localhost:8088/swagger-ui/index.html``
 
 ## 4. Use the application
 
