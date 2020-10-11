@@ -1,0 +1,15 @@
+spring:
+  r2dbc:
+    url: r2dbc:pool:postgresql://postgresdb:5432/UserService
+    username: postgres
+    password: password
+    pool:
+      initial-size: 20
+      max-size: 50
+      max-idle-time: 30m
+      validation-query: SELECT 1
+
+  liquibase:
+    url: jdbc:postgresql://postgresdb:5432/UserService
+    user: postgres
+    password: password
