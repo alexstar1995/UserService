@@ -13,7 +13,7 @@ public interface IUserService {
 
     Mono<User> getUserById(Long userId);
 
-    Mono<Void> deleteUser(Long userId);
+    Mono<User> deleteUser(Long userId);
 
     Flux<User> getAllUsers();
 }

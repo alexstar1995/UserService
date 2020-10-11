@@ -22,10 +22,8 @@ public class UserController {
     }
 
     @GetMapping("/getAll")
-    public Flux<ResponseEntity<User>> getAllUsers() {
-        return userService.getAllUsers()
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.noContent().build());
+    public Flux<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("getUser/{userId}")
@@ -36,23 +34,24 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public Mono<ResponseEntity<User>> createUser(@RequestBody User user) {
-        return userService.createUser(user)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    public Mono<ResponseEntity<User>> createUser(@RequestBody User user) throws InterruptedException {
+         return userService.createUser(user)
+                 .map(ResponseEntity::ok)
+                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
-    @PutMapping
-    public Mono<ResponseEntity<User>> updateUser(@RequestBody User user) {
+    @PutMapping("/updateUser/{userId}")
+    public Mono<ResponseEntity<User>> updateUser(@PathVariable Long userId, @RequestBody User user) {
+        user.setUserId(userId);
         return userService.updateUser(user)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping
-    public Mono<ResponseEntity<Void>> deleteUser(Long userId) {
+    public Mono<ResponseEntity<String>> deleteUser(Long userId) {
         return userService.deleteUser(userId)
-                .map(ResponseEntity::ok)
+                .map(user -> ResponseEntity.ok("User deleted"))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

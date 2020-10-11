@@ -1,10 +1,15 @@
 spring:
   r2dbc:
-    url: r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    name: sa
-    password:
+    url: r2dbc:postgresql://postgresdb:5432/UserService
+    username: postgres
+    password: password
+    pool:
+      initial-size: 20
+      max-size: 50
+      max-idle-time: 30m
+      validation-query: SELECT 1
 
   liquibase:
-    url: jdbc:h2:mem:testdb
-    user: sa
-    password:
+    url: jdbc:postgresql://postgresdb:5432/UserService
+    user: postgres
+    password: password
