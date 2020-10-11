@@ -3,6 +3,7 @@ package com.epm.UserService.api;
 import com.epm.UserService.model.User;
 import com.epm.UserService.service.IUserService;
 
+import com.epm.UserService.util.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping(AppConstants.BASE_RESOURCE_URL)
 public class UserController {
 
     private final IUserService userService;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public Mono<ResponseEntity<User>> createUser(@RequestBody User user) throws InterruptedException {
+    public Mono<ResponseEntity<User>> createUser(@RequestBody User user) {
          return userService.createUser(user)
                  .map(ResponseEntity::ok)
                  .defaultIfEmpty(ResponseEntity.badRequest().build());
@@ -48,8 +49,8 @@ public class UserController {
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping
-    public Mono<ResponseEntity<String>> deleteUser(Long userId) {
+    @DeleteMapping("/deleteUser/{userId}")
+    public Mono<ResponseEntity<String>> deleteUser(@PathVariable Long userId) {
         return userService.deleteUser(userId)
                 .map(user -> ResponseEntity.ok("User deleted"))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
